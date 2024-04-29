@@ -7,23 +7,28 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import optparse
 import sys
+import numpy as np
 
-def process_txt(csv_name):
+def process_txt(csv_name, label_col):
     """ 
     Helper function to process a text file specified by txt_name into encoded text
     """
-    opts = parse_args()
-    label_col = opts.label_col
-    df = pd.read_csv(csv_name, na_filter= True)
+    
+    df = pd.read_csv(csv_name, na_filter= True, header=0)
     print(df.columns)
-    df = df.drop(columns="HPSS_ACCESS") # drop due to the label being "moderate to high" too complicated to binarize. 
+    df = df.drop(columns=["HPSS_ACCESS", "GEOID10", "OBJECTID", "Shape__Area", "Shape__Length", "PCT_POVERTY"]) # drop due to the label being "moderate to high" too complicated to binarize. 
+    print(df.columns)
     for col in df.columns:
         # print(col)
         # column_name = str(col)
         # print(df[col][1] == 'Yes' or df[col][1] == 'No' )
         if df[col][1] == 'Yes' or df[col][1] == 'No':
             df[col] = (df[col] == 'Yes').astype(int)
-    print(df)
+    df = df.dropna() # drop na values. 
+    #print(df.shape)
+    # print(df.dropna().shape)
+    #print(np.any(np.isnan(df)))
+    #print(np.all(np.isfinite(df)))
     y = df[label_col]
     X = df.loc[:, df.columns != label_col]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
