@@ -14,7 +14,16 @@ def process_txt(csv_name):
     """
     opts = parse_args()
     label_col = opts.label_col
-    df = pd.read_csv(csv_name)
+    df = pd.read_csv(csv_name, na_filter= True)
+    print(df.columns)
+    df = df.drop(columns="HPSS_ACCESS") # drop due to the label being "moderate to high" too complicated to binarize. 
+    for col in df.columns:
+        # print(col)
+        # column_name = str(col)
+        # print(df[col][1] == 'Yes' or df[col][1] == 'No' )
+        if df[col][1] == 'Yes' or df[col][1] == 'No':
+            df[col] = (df[col] == 'Yes').astype(int)
+    print(df)
     y = df[label_col]
     X = df.loc[:, df.columns != label_col]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
@@ -33,6 +42,9 @@ def process_txt(csv_name):
     # test = encode_txt[val_index:]
 
     #train = train.shuffle()
+    # print(X_train.isnull())
+    print(X_train)
+    print(y_train)
 
     return X_train, X_test, y_train, y_test
 
@@ -49,7 +61,7 @@ def parse_args():
 
     (opts, args) = parser.parse_args()
 
-    mandatories = ['train_filename', 'test_filename', 'label_col',]
+    mandatories = ['label_col']
     for m in mandatories:
         if not opts.__dict__[m]:
             print('mandatory option ' + m + ' is missing\n')
