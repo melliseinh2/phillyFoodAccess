@@ -6,4 +6,11 @@ project todos:
 - implement logistic regresion, fc, (maybe) svms
 - magnitude of weights for logisitc regresion = most important features.
 - plot of supermarket access prob vs. poverty prob. 
-- use visualazations for project presenation. 
+- use visualazations for project presenation.
+
+
+## How to run the code:
+
+```
+python3 run_philly_food.py -d 
+```
