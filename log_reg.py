@@ -9,6 +9,10 @@ from sklearn.model_selection import train_test_split
 
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
+import svm
+
+from sklearn import svm
+
 # def train_step(model):
 #     #col_names = ['pregnant', 'glucose', 'bp', 'skin', 'insulin', 'bmi', 'pedigree', 'age', 'label']
 #     # load dataset
@@ -22,14 +26,14 @@ def run_model(clf, clf_name, X_train, X_test, y_train, y_test, label_name):
 
     y_pred = clf.predict(X_test)
 
-    prob_pos = clf.predict_proba(X_test)
+    # prob_pos = clf.predict_proba(X_test)
 
     accuracyLog = accuracy_score(y_test, y_pred)
     print(f'{clf_name} accuracy {label_name}:', accuracyLog*100, "%")
 
     create_cm(y_test, y_pred, clf, clf_name , label_name)
 
-    return prob_pos
+    return 0
 
 def create_cm(y_test, y_pred, clf, clf_name, label_name):
     cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
@@ -55,19 +59,24 @@ def main():
     # test two layer function
     # opts = util.parse_args()
     label_col = ["SUPERMARKET_ACCESS", "HIGH_POVERTY"] #opts.label_col
-    prob_pos = [] 
+    # prob_pos = [] 
     df = util.process_txt("NeighborhoodFoodRetail.csv")
 
     for i in label_col:
         # logreg = LogisticRegression(random_state=16, max_iter=500)
         X, y = util.split_data(df, i)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
-        print(X_train)
-        print(y_train)
+        # print(X_train)
+        # print(y_train)
+        print(f'Logistic Regression Results for Label {i}')
         clf = LogisticRegression(random_state=16, max_iter=500)
-        prob_pos.append(run_model( clf, "log_reg", X_train, X_test, y_train, y_test, i))
+        run_model( clf, "log_reg", X_train, X_test, y_train, y_test, i)
+        print(f'SVM Results for Label {i}')
+        clf = svm.SVC()
+        run_model( clf, "SVM", X_train, X_test, y_train, y_test, i)
 
-    visual(prob_pos[0], prob_pos[1], label_col)
+
+    # visual(prob_pos[0], prob_pos[1], label_col)
 
     
 if __name__ == "__main__":

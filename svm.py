@@ -18,6 +18,7 @@ import log_reg
 def main():
     df = util.process_txt("NeighborhoodFoodRetail.csv")
     # X, y = util.split_data(df, i)
+    best_params_all = []
 
     label_col = ["SUPERMARKET_ACCESS", "HIGH_POVERTY"] 
 
@@ -44,15 +45,17 @@ def main():
         svc_df = pd.DataFrame({'parameters_used': best_params, 'test results': test_results})
         # print("best_results")
         best_index = test_results.index(max(test_results))
-        best_result = y_pred[best_index]
+        best_params = best_params[best_index]
+        best_params_all.append(best_params)
+        # best_result = y_pred[best_index]
         # print(best_result)
         print(svc_df)
         # print(svc_clf.classes_)
         # print(i)
 
-        log_reg.create_cm(y_test[best_index], best_result, svc_clf, "SVM", curr_label)
+        # log_reg.create_cm(y_test[best_index], best_result, svc_clf, "SVM", curr_label)
 
-    return 0
+    return best_params_all
 
 
 
