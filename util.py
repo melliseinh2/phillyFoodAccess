@@ -41,7 +41,7 @@ def split_data(df, label_col):
     X = df.loc[:, df.columns != label_col]
     
 
-    return y, X
+    return X, y
 
 # def parse_args():
 #     """Parse command line arguments (train and test arff files)."""

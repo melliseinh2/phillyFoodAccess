@@ -58,12 +58,14 @@ def main():
     prob_pos = [] 
     df = util.process_txt("NeighborhoodFoodRetail.csv")
 
-    logreg = LogisticRegression(random_state=16, max_iter=500)
-
     for i in label_col:
+        # logreg = LogisticRegression(random_state=16, max_iter=500)
         X, y = util.split_data(df, i)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
-        prob_pos.append(run_model(logreg, "log_reg", X_train, X_test, y_train, y_test, i))
+        print(X_train)
+        print(y_train)
+        clf = LogisticRegression(random_state=16, max_iter=500)
+        prob_pos.append(run_model( clf, "log_reg", X_train, X_test, y_train, y_test, i))
 
     visual(prob_pos[0], prob_pos[1], label_col)
 
