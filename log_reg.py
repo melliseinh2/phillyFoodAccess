@@ -5,6 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
@@ -15,27 +16,29 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
     # label_col = util.opt
 
-def run_model(X_train, X_test, y_train, y_test, label_name):
+def run_model(clf, clf_name, X_train, X_test, y_train, y_test, label_name):
     
-    logreg = LogisticRegression(random_state=16, max_iter=500)
-    logreg.fit(X_train, y_train)
+    clf.fit(X_train, y_train)
 
-    y_pred = logreg.predict(X_test)
+    y_pred = clf.predict(X_test)
 
-    prob_pos = logreg.predict_proba(X_test)
+    prob_pos = clf.predict_proba(X_test)
 
     accuracyLog = accuracy_score(y_test, y_pred)
-    print(f'Logistic Regression accuracy {label_name}:', accuracyLog*100, "%")
+    print(f'{clf_name} accuracy {label_name}:', accuracyLog*100, "%")
 
-    cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
-    print(cnf_matrix)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cnf_matrix, display_labels=logreg.classes_)
-    disp.plot()
-    plt.title(f'Logistic Regression predicting {label_name}')
-    plt.savefig(f'cm_logreg_{label_name}.png')
+    create_cm(y_test, y_pred, clf, clf_name , label_name)
 
     return prob_pos
 
+def create_cm(y_test, y_pred, clf, clf_name, label_name):
+    cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
+    print(cnf_matrix)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cnf_matrix)
+    disp.plot()
+    plt.title(f'{clf_name} predicting {label_name}')
+    plt.savefig(f'cm_{clf_name}_{label_name}.png')
+    return cnf_matrix
 
     # train_step(logreg, X_train, X_test, y_train,
 
@@ -54,9 +57,13 @@ def main():
     label_col = ["SUPERMARKET_ACCESS", "HIGH_POVERTY"] #opts.label_col
     prob_pos = [] 
     df = util.process_txt("NeighborhoodFoodRetail.csv")
+
+    logreg = LogisticRegression(random_state=16, max_iter=500)
+
     for i in label_col:
-        X_train, X_test, y_train, y_test = util.split_data(df, i)
-        prob_pos.append(run_model(X_train, X_test, y_train, y_test, i))
+        X, y = util.split_data(df, i)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
+        prob_pos.append(run_model(logreg, "log_reg", X_train, X_test, y_train, y_test, i))
 
     visual(prob_pos[0], prob_pos[1], label_col)
 

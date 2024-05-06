@@ -4,7 +4,7 @@ Authors: Mia and Charlie
 Date: 
 """
 import pandas as pd
-from sklearn.model_selection import train_test_split
+
 import optparse
 import sys
 import numpy as np
@@ -37,10 +37,11 @@ def process_txt(csv_name):
 def split_data(df, label_col):
 
     y = df[label_col]
+    print(y)
     X = df.loc[:, df.columns != label_col]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False )
+    
 
-    return X_train, X_test, y_train, y_test
+    return y, X
 
 # def parse_args():
 #     """Parse command line arguments (train and test arff files)."""
