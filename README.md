@@ -9,7 +9,7 @@ This codebase is set up to run a Logistic Regression model as well as Support Ve
 ## Environment:
 Python: v.
 
-Keras: v.
+Sklearn: v.
 
 Pandas: v.
 
