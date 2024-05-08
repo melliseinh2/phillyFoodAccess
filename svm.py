@@ -13,12 +13,11 @@ from sklearn import utils
 import util
 import pandas as pd
 
-import run_models
+import run_philly_food
 
 def main():
     df = util.process_txt("NeighborhoodFoodRetail.csv")
-    # X, y = util.split_data(df, i)
-    best_params_all = []
+
 
     label_col = ["SUPERMARKET_ACCESS", "HIGH_POVERTY"] 
 
@@ -39,23 +38,10 @@ def main():
         print("Fold, Test Accuracy")
         for i in range(len(test_results)):
             print(f'{i+1}, {test_results[i]}')
-            # print("predictions:")
-            # print(y_pred[i])
 
         svc_df = pd.DataFrame({'parameters_used': best_params, 'test results': test_results})
-        # print("best_results")
-        best_index = test_results.index(max(test_results))
-        best_params = best_params[best_index]
-        best_params_all.append(best_params)
-        # best_result = y_pred[best_index]
-        # print(best_result)
-        print(svc_df)
-        # print(svc_clf.classes_)
-        # print(i)
 
-        # log_reg.create_cm(y_test[best_index], best_result, svc_clf, "SVM", curr_label)
-
-    return best_params_all
+    return 0
 
 
 
