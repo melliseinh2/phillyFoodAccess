@@ -1,5 +1,6 @@
 # phillyFoodAccess
 CS360 final project -- Food Access and Poverty in Philadelphia 
+
 Authors: Mia Ellis-Einhorn and Charlie Crawford
 
 ## Description:
@@ -7,9 +8,13 @@ This codebase is set up to run a Logistic Regression model as well as Support Ve
 
 ## Environment:
 Python: v.
+
 Keras: v.
+
 Pandas: v.
+
 Tensorflow: v. 
+
 Matplotlib: v. 
 
 ## How to run the code:
