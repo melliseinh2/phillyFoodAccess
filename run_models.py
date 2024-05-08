@@ -76,20 +76,20 @@ def main():
         print(f'SVM Results for Label {i}')
         clf = svm.SVC()
         run_model( clf, "SVM", X_train, X_test, y_train, y_test, i)
-        print(f'FC NN Results for Label {i}')
-        train_data = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(32)
+        # print(f'FC NN Results for Label {i}')
+        # train_data = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(32)
 
-        model = tf.keras.models.Sequential([
-            # tf.keras.layers.Flatten(input_shape=(28, 28)),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dropout(0.2),
-            tf.keras.layers.Dense(10)
-        ])
+        # model = tf.keras.models.Sequential([
+        #     # tf.keras.layers.Flatten(input_shape=(28, 28)),
+        #     tf.keras.layers.Dense(128, activation='relu'),
+        #     tf.keras.layers.Dropout(0.2),
+        #     tf.keras.layers.Dense(10)
+        # ])
 
-        predictions = model(X_train[:1]).numpy()
+        # predictions = model(X_train[:1]).numpy()
 
-        print(predictions)
-        print(tf.nn.softmax(predictions).numpy())
+        # print(predictions)
+        # print(tf.nn.softmax(predictions).numpy())
 
 
     # visual(prob_pos[0], prob_pos[1], label_col)

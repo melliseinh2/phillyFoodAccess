@@ -13,7 +13,7 @@ from sklearn import utils
 import util
 import pandas as pd
 
-import log_reg
+import run_models
 
 def main():
     df = util.process_txt("NeighborhoodFoodRetail.csv")
