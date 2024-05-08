@@ -17,8 +17,9 @@ Matplotlib: v.3.2.2
 
 ## How to run the code:
 
-```
+
 download dataset (neighborhood food retail csv) from: https://opendataphilly.org/datasets/neighborhood-food-retail/ 
-python3 run_philly_food.py -d 
+```
+python3 run_philly_food.py
 ```
 
