@@ -22,7 +22,7 @@ import tensorflow as tf
 
     # label_col = util.opt
 
-def run_model(clf, clf_name, X_train, X_test, y_train, y_test, label_name):
+def run_model(clf, clf_name, X_train, X_test, y_train, y_test, label_name, kernel = None):
     
     clf.fit(X_train, y_train)
 
@@ -33,17 +33,25 @@ def run_model(clf, clf_name, X_train, X_test, y_train, y_test, label_name):
     accuracyLog = accuracy_score(y_test, y_pred)
     print(f'{clf_name} accuracy {label_name}:', accuracyLog*100, "%")
 
-    create_cm(y_test, y_pred, clf, clf_name , label_name)
+    create_cm(y_test, y_pred, clf, clf_name , label_name, kernel)
 
-    return 0
+    if clf_name == "log_reg" or kernel:
+        return clf.coef_
+    else:
+        return 0
 
-def create_cm(y_test, y_pred, clf, clf_name, label_name):
+def create_cm(y_test, y_pred, clf, clf_name, label_name, kernel = ""):
     cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
     print(cnf_matrix)
     disp = ConfusionMatrixDisplay(confusion_matrix=cnf_matrix)
     disp.plot()
-    plt.title(f'{clf_name} predicting {label_name}')
-    plt.savefig(f'cm_{clf_name}_{label_name}.png')
+    kernel_txt = ""
+    if kernel:
+        kernel_txt = f' Kernel: {kernel}'
+    else:
+        kernel = ""
+    plt.title(f'{clf_name} predicting {label_name} {kernel_txt}')
+    plt.savefig(f'cm_{clf_name}_{label_name}_{kernel}.png')
     return cnf_matrix
 
     # train_step(logreg, X_train, X_test, y_train,
@@ -72,10 +80,12 @@ def main():
         # print(y_train)
         print(f'Logistic Regression Results for Label {i}')
         clf = LogisticRegression(random_state=16, max_iter=500)
-        run_model( clf, "log_reg", X_train, X_test, y_train, y_test, i)
+        print(run_model( clf, "log_reg", X_train, X_test, y_train, y_test, i))
         print(f'SVM Results for Label {i}')
-        clf = svm.SVC()
-        run_model( clf, "SVM", X_train, X_test, y_train, y_test, i)
+
+        for i in ['linear', 'rbf']:
+            clf = svm.SVC(kernel=i)
+            print(run_model( clf, "SVM", X_train, X_test, y_train, y_test, i))
         # print(f'FC NN Results for Label {i}')
         # train_data = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(32)
 
